@@ -1,0 +1,15 @@
+
+/* src/components/TreeGarden.css */
+.tree-garden-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fef9c3; /* açık sarı ton */
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.tree-stage {
+  margin: 20px 0;
+}
