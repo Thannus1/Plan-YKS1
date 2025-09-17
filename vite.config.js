@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-export default defineConfig({
+export default defineConfig({d
   plugins: [react()],
 })
 export default defineConfig({
@@ -13,12 +13,12 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate', // SW her deploy sonrası otomatik günceller
       manifest: {
-        name: 'Benim Uygulamam',
-        short_name: 'App',
+        name: 'Kişisel Koçluk',
+        short_name: 'Koçluk',
         start_url: '/',
         display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#2196f3',
+        background_color: '#e3ca0e',
+        theme_color: '#403f3c',
         icons: [
           {
             src: '/icons/icon-192.png',
