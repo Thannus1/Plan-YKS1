@@ -71,43 +71,38 @@ export default function DenemeAnaliz() {
 
   // Yanlış / boş işaretleme
   const toggleDurum = async (denemeId, ders, konu, type) => {
-    try {
-      const hedef = denemeler.find((d) => d.id === denemeId);
-      if (!hedef) return;
+    const hedef = denemeler.find((d) => d.id === denemeId);
+    if (!hedef) return;
 
-      const mevcutDurum =
-        hedef?.yanlislar?.[ders]?.[konu]?.[type] || false;
+    const mevcutDurum = hedef?.yanlislar?.[ders]?.[konu]?.[type] || false;
 
-      const ref = doc(db, "users", user.uid, "denemeler", denemeId);
-      await updateDoc(ref, {
-        [`yanlislar.${ders}.${konu}.${type}`]: !mevcutDurum,
-      });
+    const ref = doc(db, "users", user.uid, "denemeler", denemeId);
+    await updateDoc(ref, {
+      [`yanlislar.${ders}.${konu}.${type}`]: !mevcutDurum,
+    });
 
-      // 🔥 Local state'i de güncelle (anında UI güncellemesi için)
-      const yeniDenemeler = denemeler.map((d) =>
-        d.id === denemeId
-          ? {
-              ...d,
-              yanlislar: {
-                ...d.yanlislar,
-                [ders]: {
-                  ...(d.yanlislar?.[ders] || {}),
-                  [konu]: {
-                    ...(d.yanlislar?.[ders]?.[konu] || {
-                      yanlis: false,
-                      bos: false,
-                    }),
-                    [type]: !mevcutDurum,
-                  },
+    // Local state güncelle
+    const yeniDenemeler = denemeler.map((d) =>
+      d.id === denemeId
+        ? {
+            ...d,
+            yanlislar: {
+              ...d.yanlislar,
+              [ders]: {
+                ...(d.yanlislar?.[ders] || {}),
+                [konu]: {
+                  ...(d.yanlislar?.[ders]?.[konu] || {
+                    yanlis: false,
+                    bos: false,
+                  }),
+                  [type]: !mevcutDurum,
                 },
               },
-            }
-          : d
-      );
-      setDenemeler(yeniDenemeler);
-    } catch (err) {
-      console.error("Toggle error:", err);
-    }
+            },
+          }
+        : d
+    );
+    setDenemeler(yeniDenemeler);
   };
 
   // Analiz
@@ -143,17 +138,15 @@ export default function DenemeAnaliz() {
     const deneme = denemeler.find((d) => d.id === denemeId);
     if (!deneme) return null;
 
-    const dersKey = Object.keys(TOPIC_BANK).find((k) => {
-      return (
+    const dersKey = Object.keys(TOPIC_BANK).find(
+      (k) =>
         k.toLowerCase().includes(deneme.tur.toLowerCase()) &&
         k.toLowerCase().includes(ders.toLowerCase())
-      );
-    });
-
+    );
     const konular = TOPIC_BANK[dersKey] || [];
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white p-6 rounded w-96 max-h-[80vh] overflow-y-auto">
           <h2 className="text-xl font-bold mb-4">
             {deneme.ad} - {ders} Konuları
@@ -166,14 +159,16 @@ export default function DenemeAnaliz() {
                   type="checkbox"
                   checked={!!deneme?.yanlislar?.[ders]?.[k.name]?.yanlis}
                   onChange={() => toggleDurum(deneme.id, ders, k.name, "yanlis")}
-                /> ❌
+                />{" "}
+                ❌
               </label>
               <label>
                 <input
                   type="checkbox"
                   checked={!!deneme?.yanlislar?.[ders]?.[k.name]?.bos}
                   onChange={() => toggleDurum(deneme.id, ders, k.name, "bos")}
-                /> ⭕
+                />{" "}
+                ⭕
               </label>
             </div>
           ))}
