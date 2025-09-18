@@ -19,7 +19,7 @@
   "vite": "^4.0.0",
   "@vitejs/plugin-react": "^3.0.0",
   "vite-plugin-pwa": "^0.16.0"
-}
+},
   "engines": {
     "node": "22.x",
     "npm": "9.x"
