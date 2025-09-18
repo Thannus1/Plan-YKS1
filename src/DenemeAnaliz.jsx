@@ -19,11 +19,11 @@ const SORU_SAYILARI = {
   "Tyt Cografya": 5,
   "Tyt Felsefe": 5,
   "Tyt Din": 5,
-  "Tyt Matematik": 40,
+  "Tyt Matematik": 30,
   "Tyt Fizik": 7,
   "Tyt Kimya": 7,
   "Tyt Biyoloji": 6,
-  "Ayt Matematik": 40,
+  "Ayt Matematik": 32,
   "Ayt Fizik": 14,
   "Ayt Kimya": 13,
   "Ayt Biyoloji": 13,
@@ -32,6 +32,8 @@ const SORU_SAYILARI = {
   "Ayt Coğrafya" : 17,
   "Ayt Felsefe" : 12,
   "Ayt Din" : 6,
+  "Ayt Geometri" : 8,
+  "Tyt Geometri" : 10,
 };
 
 export default function DenemeAnaliz() {
