@@ -27,6 +27,11 @@ const SORU_SAYILARI = {
   "Ayt Fizik": 14,
   "Ayt Kimya": 13,
   "Ayt Biyoloji": 13,
+  "Ayt Edebiyat": 14,
+  "Ayt Tarih" : 21,
+  "Ayt Coğrafya" : 17,
+  "Ayt Felsefe" : 12,
+  "Ayt Din" : 6,
 };
 
 export default function DenemeAnaliz() {
