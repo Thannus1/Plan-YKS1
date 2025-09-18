@@ -36,7 +36,6 @@ export default function DenemeAnaliz() {
   const [activeCell, setActiveCell] = useState(null);
   const [user, setUser] = useState(null);
 
-  // Kullanıcı oturumu
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -44,7 +43,6 @@ export default function DenemeAnaliz() {
     return () => unsubscribe();
   }, []);
 
-  // Kullanıcıya ait denemeleri Firestore'dan dinle
   useEffect(() => {
     if (!user) return;
     const q = collection(db, "users", user.uid, "denemeler");
@@ -54,7 +52,6 @@ export default function DenemeAnaliz() {
     return () => unsubscribe();
   }, [user]);
 
-  // Yeni deneme ekle
   const denemeEkle = async () => {
     if (!denemeAdi || !user) return;
     const ref = collection(db, "users", user.uid, "denemeler");
@@ -62,26 +59,21 @@ export default function DenemeAnaliz() {
     setDenemeAdi("");
   };
 
-  // Deneme sil
   const denemeSil = async (denemeId) => {
     if (!user) return;
     const ref = doc(db, "users", user.uid, "denemeler", denemeId);
     await deleteDoc(ref);
   };
 
-  // Yanlış / boş işaretleme
   const toggleDurum = async (denemeId, ders, konu, type) => {
     const hedef = denemeler.find((d) => d.id === denemeId);
     if (!hedef) return;
-
     const mevcutDurum = hedef?.yanlislar?.[ders]?.[konu]?.[type] || false;
-
     const ref = doc(db, "users", user.uid, "denemeler", denemeId);
     await updateDoc(ref, {
       [`yanlislar.${ders}.${konu}.${type}`]: !mevcutDurum,
     });
 
-    // Local state güncelle
     const yeniDenemeler = denemeler.map((d) =>
       d.id === denemeId
         ? {
@@ -91,10 +83,7 @@ export default function DenemeAnaliz() {
               [ders]: {
                 ...(d.yanlislar?.[ders] || {}),
                 [konu]: {
-                  ...(d.yanlislar?.[ders]?.[konu] || {
-                    yanlis: false,
-                    bos: false,
-                  }),
+                  ...(d.yanlislar?.[ders]?.[konu] || { yanlis: false, bos: false }),
                   [type]: !mevcutDurum,
                 },
               },
@@ -105,7 +94,6 @@ export default function DenemeAnaliz() {
     setDenemeler(yeniDenemeler);
   };
 
-  // Analiz
   const analizYap = () => {
     const sayac = {};
     denemeler.forEach((d) => {
@@ -118,10 +106,7 @@ export default function DenemeAnaliz() {
       });
     });
 
-    const oncelik1 = [];
-    const oncelik2 = [];
-    const oncelik3 = [];
-
+    const oncelik1 = [], oncelik2 = [], oncelik3 = [];
     Object.entries(sayac).forEach(([konu, count]) => {
       if (count >= 3) oncelik1.push(konu);
       else if (count === 2) oncelik2.push(konu);
@@ -133,11 +118,9 @@ export default function DenemeAnaliz() {
 
   const { oncelik1, oncelik2, oncelik3 } = analizYap();
 
-  // Modal
   const Modal = ({ ders, denemeId, denemeler }) => {
     const deneme = denemeler.find((d) => d.id === denemeId);
     if (!deneme) return null;
-
     const dersKey = Object.keys(TOPIC_BANK).find(
       (k) =>
         k.toLowerCase().includes(deneme.tur.toLowerCase()) &&
@@ -159,16 +142,14 @@ export default function DenemeAnaliz() {
                   type="checkbox"
                   checked={!!deneme?.yanlislar?.[ders]?.[k.name]?.yanlis}
                   onChange={() => toggleDurum(deneme.id, ders, k.name, "yanlis")}
-                />{" "}
-                ❌
+                /> ❌
               </label>
               <label>
                 <input
                   type="checkbox"
                   checked={!!deneme?.yanlislar?.[ders]?.[k.name]?.bos}
                   onChange={() => toggleDurum(deneme.id, ders, k.name, "bos")}
-                />{" "}
-                ⭕
+                /> ⭕
               </label>
             </div>
           ))}
@@ -183,17 +164,12 @@ export default function DenemeAnaliz() {
     );
   };
 
-  // Ders listesi
   const dersListesi = Object.keys(TOPIC_BANK)
     .filter((key) => key.toLowerCase().startsWith(tur.toLowerCase()))
     .map((k) => k.replace(new RegExp(`^${tur}\\s`, "i"), ""));
 
-  // Net hesaplama
   const hesaplaNet = (deneme) => {
-    let toplamDogru = 0;
-    let toplamYanlis = 0;
-    let toplamBos = 0;
-
+    let toplamDogru = 0, toplamYanlis = 0, toplamBos = 0;
     Object.entries(deneme.yanlislar || {}).forEach(([ders, konular]) => {
       const dersKey = Object.keys(SORU_SAYILARI).find(
         (k) =>
@@ -201,20 +177,16 @@ export default function DenemeAnaliz() {
           k.toLowerCase().includes(ders.toLowerCase())
       );
       const soruSayisi = SORU_SAYILARI[dersKey] || 0;
-
-      let yanlis = 0;
-      let bos = 0;
+      let yanlis = 0, bos = 0;
       Object.values(konular).forEach((durum) => {
         if (durum.yanlis) yanlis++;
         if (durum.bos) bos++;
       });
-
       const dogru = Math.max(0, soruSayisi - yanlis - bos);
       toplamDogru += dogru;
       toplamYanlis += yanlis;
       toplamBos += bos;
     });
-
     const net = toplamDogru - toplamYanlis / 4;
     return { dogru: toplamDogru, yanlis: toplamYanlis, bos: toplamBos, net };
   };
@@ -223,7 +195,6 @@ export default function DenemeAnaliz() {
     <div className="min-h-screen bg-yellow-50 p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">📊 Deneme Analiz Sistemi</h1>
 
-      {/* Deneme ekleme alanı */}
       <div className="bg-white p-4 rounded shadow mb-6 flex gap-4">
         <input
           type="text"
@@ -244,14 +215,14 @@ export default function DenemeAnaliz() {
         </button>
       </div>
 
-      {/* Tablo */}
+      {/* Tablo: YAN YANA SIRALAMA DÜZELTİLDİ */}
       <div className="overflow-x-auto">
-        <table className="table-auto border-collapse w-full bg-white shadow rounded">
+        <table className="table-fixed border-collapse w-full bg-white shadow rounded">
           <thead>
             <tr>
-              <th className="border px-4 py-2">Dersler</th>
+              <th className="border px-4 py-2 w-32">Dersler</th>
               {denemeler.map((d) => (
-                <th key={d.id} className="border px-4 py-2 flex items-center gap-2">
+                <th key={d.id} className="border px-4 py-2 w-40 text-center">
                   {d.ad}
                   <button
                     onClick={() => denemeSil(d.id)}
@@ -282,12 +253,10 @@ export default function DenemeAnaliz() {
         </table>
       </div>
 
-      {/* Modal */}
       {activeCell && (
         <Modal ders={activeCell.ders} denemeId={activeCell.denemeId} denemeler={denemeler} />
       )}
 
-      {/* Net sonuçları */}
       <div className="mt-6 bg-white p-4 rounded shadow">
         <h2 className="text-xl font-bold mb-4">📈 Net Sonuçları</h2>
         {denemeler.map((d) => {
@@ -300,7 +269,6 @@ export default function DenemeAnaliz() {
         })}
       </div>
 
-      {/* Konu çalışma listesi */}
       <div className="mt-10 bg-white p-6 rounded shadow">
         <h2 className="text-2xl font-bold mb-4">📌 Konu Çalışma Listesi</h2>
         <div>
