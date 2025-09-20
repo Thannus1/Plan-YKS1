@@ -92,7 +92,9 @@ export const TOPIC_BANK = {
     { name: "Kuvvet ve Hareket (Detaylı + Soru Çözümü)", weight: 3 },
     { name: "Basınç (Gazlar / Akışkanlar)", weight: 2 },
     { name: "Isı, Sıcaklık ve Genleşme", weight: 3 },
-    { name: "Elektrik ve Manyetizma", weight: 3 }
+    { name: "Elektrik ve Manyetizma", weight: 3 },
+    { name: "Dalgalar", weight: 2 },
+    { name: "Optik", weight: 3 },
   ],
   "Tyt Kimya": [
     { name: "Kimya Bilimi", weight: 1 },
@@ -163,10 +165,6 @@ export const TOPIC_BANK = {
     { name: "Kimya ve Elektrik", weight: 3 }
   ],
   "Ayt Biyoloji": [
-    { name: "Kemosentez", weight: 1 },
-    { name: "Nükleik Asitler", weight: 1 },
-    { name: "Genetik Şifre ve Protein Sentezi", weight: 1 },
-    { name: "Canlılık ve Enerji", weight: 1 },
     { name: "Sinir Sistemi", weight: 2 },
     { name: "Endokrin Sistem ve Hormonlar", weight: 2 },
     { name: "Duyu Organları", weight: 2 },
@@ -176,12 +174,15 @@ export const TOPIC_BANK = {
     { name: "Üreme Sistemi ve Embriyonik Gelişim", weight: 2 },
     { name: "Komünite Ekolojisi", weight: 2 },
     { name: "Popülasyon Ekolojisi", weight: 2 },
-    { name: "Kemosentez", weight: 2 },
     { name: "Dolaşım ve Bağışıklık Sistemi", weight: 3 },
     { name: "Solunum Sistemi", weight: 3 },
     { name: "Genden Proteine", weight: 3 },
+    { name: "Nükleik Asitler", weight: 1 },
+    { name: "Genetik Şifre ve Protein Sentezi", weight: 1 },
+    { name: "Canlılık ve Enerji", weight: 1 },
     { name: "Canlılarda Enerji Dönüşümleri", weight: 3 },
     { name: "Fotosentez", weight: 3 },
+    { name: "Kemosentez", weight: 1 },
     { name: "Hücresel Solunum", weight: 3 },
     { name: "Bitki Biyolojisi", weight: 3 },
     { name: "Canlılar ve Çevre", weight: 3 }
