@@ -98,16 +98,16 @@ export const TOPIC_BANK = {
   ],
   "Tyt Kimya": [
     { name: "Kimya Bilimi", weight: 1 },
-    { name: "Kimyanın Temel Kanunları", weight: 1 },
-    { name: "Asit, Baz ve Tuz", weight: 1 },
-    { name: "Doğa ve Kimya", weight: 1 },
-    { name: "Kimya Her Yerde", weight: 1 },
     { name: "Atom ve Yapısı", weight: 2 },
     { name: "Periyodik Sistem", weight: 2 },
     { name: "Kimyasal Türler Arası Etkileşimler", weight: 2 },
     { name: "Maddenin Halleri", weight: 2 },
-    { name: "Karışımlar", weight: 2 },
+    { name: "Kimyanın Temel Kanunları", weight: 1 },
+    { name: "Asit, Baz ve Tuz", weight: 1 },
     { name: "Kimyasal Hesaplamalar", weight: 2 },
+    { name: "Karışımlar", weight: 2 },
+    { name: "Doğa ve Kimya", weight: 1 },
+    { name: "Kimya Her Yerde", weight: 1 },
     { name: "Endüstride ve Canlılarda Enerji", weight: 2 }
   ],
   "Tyt Biyoloji": [
